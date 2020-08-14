@@ -102,7 +102,7 @@ class Toggle extends React.Component {
   handleClick() {
     this.setState(state => ({
       isToggleOn: !state.isToggleOn,
-    }),() => {
+    }), () => {
       console.log(this.state.isToggleOn);
     });
   }
@@ -129,9 +129,11 @@ const author = {
 function UserGreeting(props) {
   return <h1>Welcome back!</h1>;
 }
+
 function GuestGreeting(props) {
-  return <h1>Please sign up.</h1>
+  return <h1>Please sign up.</h1>;
 }
+
 /*
 *   三目运算符 ? :
 *   author: Trojan
@@ -146,52 +148,58 @@ function Greeting(props) {
         : <GuestGreeting/>
       }
     </div>
-  )
+  );
   // if(isLoggedIn) {
   //   return <UserGreeting/>;
   // } else {
   //   return <GuestGreeting/>;
   // }
 }
+
 function LoginButton(props) {
   return (
     <button onClick={props.onClick}>Login</button>
   );
 }
+
 function LogoutButton(props) {
   return (
     <button onClick={props.onClick}>
       Logout
     </button>
-  )
+  );
 }
+
 class LoginControl extends React.Component {
   constructor(props) {
     super(props);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.state = {isLoggedIn: false}
+    this.state = {isLoggedIn: false};
   }
+
   handleLoginClick() {
     this.setState({isLoggedIn: true});
   }
+
   handleLogoutClick() {
     this.setState({isLoggedIn: false});
   }
+
   render() {
     const isLoggedIn = this.state.isLoggedIn;
     let button;
-    if(isLoggedIn) {
+    if (isLoggedIn) {
       button = <LogoutButton onClick={this.handleLogoutClick}/>;
-  } else {
+    } else {
       button = <LoginButton onClick={this.handleLoginClick}/>;
     }
     return (
       <div>
-        <Greeting isLoggedIn={this.state.isLoggedIn} />
+        <Greeting isLoggedIn={this.state.isLoggedIn}/>
         {button}
       </div>
-    )
+    );
   }
 }
 
@@ -204,20 +212,21 @@ function MailBox(props) {
   return (
     <div>
       {unreadMessages.length > 0 &&
-        <h2>
-          you have {unreadMessages.length} unread messages.
-        </h2>
+      <h2>
+        you have {unreadMessages.length} unread messages.
+      </h2>
       }
     </div>
-  )
+  );
 }
+
 const messages = ['React', '', 'Re: React', 'Re:Re: React'];
 
 /*
 *   阻止组件渲染
 * */
 function WarningBanner(props) {
-  if(!props.warn) {
+  if (!props.warn) {
     return null;
   }
   return (
@@ -226,27 +235,55 @@ function WarningBanner(props) {
     </div>
   );
 }
+
 class Page extends React.Component {
   constructor(props) {
     super(props);
-    this.state  = {shwWarning: true};
+    this.state = {shwWarning: true};
     this.handleToggleClick = this.handleToggleClick.bind(this);
   }
+
   handleToggleClick() {
     this.setState(state => ({
       showWarning: !state.showWarning
     }));
   }
+
   render() {
     return (
       <div>
         <WarningBanner warn={this.state.showWarning}/>
         <button onClick={this.handleToggleClick}>
-          {this.state.showWarning? 'Hide': 'Show'}
+          {this.state.showWarning ? 'Hide' : 'Show'}
         </button>
       </div>
-    )
+    );
   }
+}
+
+/*
+*   列表渲染
+* */
+
+const numbers = [1, 2, 3, 4, 5];
+// const listItems = numbers.map((number) =>
+//   <li>{number}</li>
+// );
+
+/*
+* 基础列表组件
+* */
+
+function NumberList(props) {
+  const number = props.numbers;
+  //  这里是JSX嵌入map()
+  const listItems = number.map((number,index) =>
+    // 骚操作 反正只要你没用过，保证其唯一就行,这里的index保留
+    <li key={parseInt(number)}>
+      {number}
+    </li>
+  );
+  return <ul>{listItems}</ul>;
 }
 
 ReactDOM.render(
@@ -259,6 +296,7 @@ ReactDOM.render(
     <LoginControl/>
     <MailBox unreadMessages={messages}/>
     <Page/>
+      <NumberList numbers={numbers}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
